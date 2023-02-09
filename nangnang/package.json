@@ -8,6 +8,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/config-plugins": "^5.0.2",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/native-stack": "^6.9.8",
     "axios": "^1.2.4",
@@ -26,7 +27,8 @@
     "react-native-screens": "~3.18.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "sharp-cli": "^4.1.0"
   },
   "private": true
 }

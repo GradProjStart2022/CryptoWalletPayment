@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { Link } from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google'
 
+import Colors from '../constants/colors';
 import HeaderLogo from '../components/HeaderLogo';
 import InputText from '../components/InputText';
 import ScreenTitle from '../components/ScreenTitle';
 
-import WalletSelect from './WalletSelect';
+
+import MyWallets from './MyWallets';
 // web : 185496097106-sp0mrog1pvfhkg0kijstue30hf0ugtf6.apps.googleusercontent.com
 // IOS : 185496097106-9losums1qg0iljj25kgt1krhcsp4h5eg.apps.googleusercontent.com
 // Android : 185496097106-35agk1e07b0h6t2egjm0sdh88odo1u5k.apps.googleusercontent.com
@@ -18,6 +21,7 @@ const Login = ({ navigation }) => {
 
     const [accessToken, setAccessToken] = useState();
     const [userInfo, setUserInfo] = useState();
+
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId:"185496097106-sp0mrog1pvfhkg0kijstue30hf0ugtf6.apps.googleusercontent.com",
         iosClientId: "185496097106-9losums1qg0iljj25kgt1krhcsp4h5eg.apps.googleusercontent.com",
@@ -54,10 +58,14 @@ const Login = ({ navigation }) => {
                     <Image source={{ uri: userInfo.picture }}  style={styles.profilePic}/>
                     <Text style={{ color: "red" }}>로그인 됬습니다. {userInfo.name}</Text>
                     <Text>{userInfo.email}</Text>
+                    <View>
+                        <Button title="결제 하기"/>
+                    </View>
                 </View>
             );
         }
     };
+
     const LoginInputHandler = (key, value) => {
         setLoginInput(prevState => ({
             ...prevState,
@@ -70,7 +78,7 @@ const Login = ({ navigation }) => {
 
     return (
         <View style={styles.LoginView}>
-            {accessToken && WalletSelect()}
+            {accessToken && MyWallets()}
             {accessToken == null &&
             <>
             <HeaderLogo />
@@ -78,7 +86,6 @@ const Login = ({ navigation }) => {
                 <ScreenTitle title="낭낭" content="암호화폐 지갑 통합 결제 플랫폼" />
             </View>
             <View style={{ flex: 1 }}>
-
                 <InputText
                     name="이메일"
                     placeholder="이메일"
@@ -97,7 +104,7 @@ const Login = ({ navigation }) => {
                     <TouchableOpacity
                         style={styles.LoginButton}
                         onPress={LoginHandler}>
-                        <Text style={{ color: "#FFEBB7" }}>로그인</Text>
+                        <Text style={styles.text}>로그인</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.LoginButton}
@@ -107,12 +114,12 @@ const Login = ({ navigation }) => {
                         <Image
                             style={{ width: 30, height: 30, marginRight: 10, }}
                             source={require('../assets/google.png')} />
-                        <Text style={{ color: "#FFEBB7" }}>구글 로그인</Text>
+                        <Text style={styles.text}>구글 로그인</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.SignUpLink}>
                     <Text>계정이 없으신가요?</Text>
-                    <Text>회원가입</Text>
+                    <Link to={{screen:'Register'}}>회원가입</Link>
                 </View>
             </View>
             </>}
@@ -146,7 +153,7 @@ const styles = StyleSheet.create({
     LoginButton: {
 
         borderRadius: 10,
-        backgroundColor: '#243763',
+        backgroundColor: Colors.indigo500,
 
         width: '100%',
         height: 50,
@@ -155,6 +162,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    text:{
+        color: Colors.Incarnadine500
     },
     SignUpLink: {
 

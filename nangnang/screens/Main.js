@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
 
 import Colors from '../constants/colors';
 import Logo from '../components/Logo';
+import SubmitButton from '../components/Buttons/SubmitButton';
 
 const Main = ({ navigation }) => {
     return (
@@ -11,7 +12,17 @@ const Main = ({ navigation }) => {
                 <Logo />
             </View>
             <View style={styles.ButtonView}>
-                <TouchableOpacity 
+                <SubmitButton
+                    onPress={()=>navigation.navigate('MyWallets')}
+                    >지갑등록 / 지갑확인</SubmitButton>
+                <SubmitButton>내 결제 내역</SubmitButton>
+                <SubmitButton>내 정보</SubmitButton>
+                <Pressable
+                    style={styles.button}
+                    onPress={()=>navigation.navigate('MyWallets')}>
+                    <Text style={styles.text}>결제하러가기</Text>
+                </Pressable>
+                {/* <TouchableOpacity 
                     style={styles.button}
                     onPress={()=>navigation.navigate('MyWallets')}>
                     <Text style={styles.text}>지갑등록하기 / 지갑확인</Text>
@@ -22,6 +33,9 @@ const Main = ({ navigation }) => {
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.text}>내정보</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={[styles.button,{backgroundColor: Colors.orange500}]}>
+                    <Text style={styles.text}>결제하러가기</Text>
+                </TouchableOpacity> */}
             </View>
         </View>
     );
@@ -41,12 +55,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignSelf:'center',
     },
-    button: {
-
+    button:{
+        borderRadius: 10,
+        backgroundColor: Colors.indigo400,
+        borderColor: Colors.orange400,
+        borderWidth: 2,
         width: '100%',
         height: 50,
-        borderRadius: 10,
-        backgroundColor: Colors.indigo500,
+        marginTop: 10,
+
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },

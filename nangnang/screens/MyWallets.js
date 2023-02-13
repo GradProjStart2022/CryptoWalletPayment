@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, FlatList,TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList,TouchableOpacity} from 'react-native';
+import { Link } from '@react-navigation/native';
 import ScreenTitle from '../components/ScreenTitle';
 import WalletInputModal from '../components/WalletInputModal';
-
+import HeaderLogo from '../components/HeaderLogo';
+import wallets from '../constants/wallets';
+import { useAuth } from '../constants/AuthContext';
 import Colors from '../constants/colors';
 
 const formatData = (data, numColumns) =>{
@@ -18,66 +21,20 @@ const formatData = (data, numColumns) =>{
 }
 
 const MyWallets = () => {
+    const [user] = useAuth();
     const [modalIsVisible, setModalIsVisible] = useState(false); 
-    const [wallets, setWallets] = useState([
-        {
-            id: 1,
-            wallet: "metamask",
-            imageURL: require(`../assets/metamask.png`)
-
-        },
-        {
-            id: 2,
-            wallet: "trustwallet",
-            imageURL: require(`../assets/trustwallet.png`)
-        },
-        {
-            id: 3,
-            wallet: "metamask",
-            imageURL: require(`../assets/metamask.png`)
-
-        },
-        {
-            id: 4,
-            wallet: "trustwallet",
-            imageURL: require(`../assets/trustwallet.png`)
-        },
-        {
-            id: 5,
-            wallet: "metamask",
-            imageURL: require(`../assets/metamask.png`)
-
-        },
-        {
-            id: 6,
-            wallet: "trustwallet",
-            imageURL: require(`../assets/trustwallet.png`)
-        },
-        {
-            id: 7,
-            wallet: "metamask",
-            imageURL: require(`../assets/metamask.png`)
-
-        },
-        {
-            id: 8,
-            wallet: "trustwallet",
-            imageURL: require(`../assets/trustwallet.png`)
-        },
-        {
-            id: 9,
-            wallet: "trustwallet",
-            imageURL: require(`../assets/trustwallet.png`)
-        }
-    ])
-
+    
     function CloseModalHandler(){
         setModalIsVisible(false);
     }
 
     return (
         <View style={styles.MyWalletsView}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={styles.header}>
+                <Link to={{screen:'Main'}} style={styles.link}>메인으로가기</Link>
+                <HeaderLogo />
+            </View>
+            <View style={styles.title}>
                 <ScreenTitle title="내 지갑" />
             </View>
             <View style={styles.WalletBlockView}>
@@ -93,7 +50,7 @@ const MyWallets = () => {
                                 <View style={styles.iconwrapper}>
                                     <Image
                                         style={styles.image}
-                                        source={require(`../assets/trustwallet.png`)} />
+                                        source={item.imageURL} />
                                 </View>
                                 <Text style={styles.indigo500}>{item.wallet}</Text>
                                 <TouchableOpacity style={styles.button}>
@@ -119,6 +76,15 @@ const styles = StyleSheet.create({
     MyWalletsView: {
         flex: 1,
     },
+    header:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
+    },
+    title:{
+        flex:1,
+        // marginTop:,
+    },
     WalletBlockView: {
         flex: 4,
         flexDirection: 'row',
@@ -142,7 +108,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 100 / 2,
-        backgroundColor: Colors.orange500,
+        backgroundColor: Colors.backgroundwhite,
 
         justifyContent: 'center',
         alignItems: 'center',
@@ -166,6 +132,16 @@ const styles = StyleSheet.create({
     },
     text:{
         colors: Colors.indigo500,
-    }
+    },
+    link:{
+        color: Colors.orange500,
+        fontSize:15,
+        fontWeight:'bold',
+        // borderWidth:1,
+
+        alignSelf:'flex-end', 
+        padding: 30,
+        marginVertical: 16,
+    },
 })
 export default MyWallets;

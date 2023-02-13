@@ -11,11 +11,11 @@ const InputText = ({name, placeholder, secureTextEntry,value,onChangeText}) => {
                 <TextInput 
                     style={styles.InputArea} 
                     placeholderTextColor="#A9A9AC" 
-                    
-                    autoCorrect={false}
+                    variant="outlined"
+                    autoComplete='email'
                     placeholder={placeholder}
                     secureTextEntry={secureTextEntry}
-                    
+                
                     value={value}
                     onChangeText={onChangeText}/>
             </View>

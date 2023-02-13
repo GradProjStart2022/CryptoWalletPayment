@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image,Text,StyleSheet } from 'react-native';
 
-
+import Colors from '../constants/colors';
 const Logo = () => {
     return (
         <View style={styles.LogoView}>
@@ -20,7 +20,7 @@ const styles= StyleSheet.create({
         alignItems:'center'
     },
     logo:{
-        color:'#FF6E31',
+        color:Colors.orange500,
         fontSize:30,
     },
 

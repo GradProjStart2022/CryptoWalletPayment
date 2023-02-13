@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
+import Colors from '../constants/colors';
 import Logo from '../components/Logo';
 
 const Main = ({ navigation }) => {
@@ -13,13 +14,13 @@ const Main = ({ navigation }) => {
                 <TouchableOpacity 
                     style={styles.button}
                     onPress={()=>navigation.navigate('MyWallets')}>
-                    <Text style={{ color: '#FFEBB7' }}>지갑등록하기 / 지갑확인</Text>
+                    <Text style={styles.text}>지갑등록하기 / 지갑확인</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
-                    <Text style={{ color: '#FFEBB7' }}>결제내역</Text>
+                    <Text style={styles.text}>결제내역</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
-                    <Text style={{ color: '#FFEBB7' }}>내정보</Text>
+                    <Text style={styles.text}>내정보</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -45,9 +46,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 50,
         borderRadius: 10,
-        backgroundColor: '#243763',
+        backgroundColor: Colors.indigo500,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    text:{
+        color: Colors.Incarnadine500
     }
 })
 export default Main;

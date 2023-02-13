@@ -3,11 +3,11 @@ import { View, Modal, StyleSheet, Text, TouchableOpacity, TextInput } from 'reac
 import axios from 'axios';
 import EtherScanAPI from '../API/EtherScanAPI';
 
-const WalletModalButton = (props) => {
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [walletAddress, setWalletAddress] = useState("");
-    const [currnetPrice, setCurrentPrice] = useState(0);
 
+import Colors from '../constants/colors';
+const WalletInputModal = (props) => {
+    const [walletAddress, setWalletAddress] = useState("");
+    const [currentPrice, setCurrentPrice] = useState(0);
 
     // @@@@@ State 공부해서 최적화 시켜야한다.
     const [Ether, setEther] = useState(0);
@@ -34,24 +34,22 @@ const WalletModalButton = (props) => {
             })
             const currnetPrice = response.data[0].trade_price
             setCurrentPrice(currnetPrice);
-            setDollar((Ether * currnetPrice).toFixed(3))
+            setDollar((Ether * currentPrice).toFixed(3))
         }catch(error){
             Error(error)
         }
     }
     return (
-        <View style={styles.WalletModalButtonView}>
             <Modal
-                animationType='slide'
-                transparent={true}
-                visible={isModalVisible}>
-                <View style={styles.centerdView}>
+                animationType='fade'
+                visible={props.visible}>
+                    <View style={styles.centerdView}>
                     <View style={styles.modalView}>
-                        <Text style={{ color: '#FF6E31', fontSize: 20 }}>{props.title}</Text>
-                        <Text style={{ color: "#243763" }}>사용자님의 자금</Text>
+                        <Text style={[styles.text, {fontSize: 20 }]}>{props.title}</Text>
+                        <Text style={styles.text}>사용자님의 자금</Text>
                         {/* <Text style={{ color: "#243763" }}>{Balance} : 웨이</Text> */}
-                        <Text style={{ color: "#243763" }}>{Ether} : 이더리움</Text>
-                        <Text style={{ color: "#243763" }}>{Dollar} : 달러</Text>
+                        <Text style={styles.text}>{Ether} : 이더리움</Text>
+                        <Text style={styles.text}>{Dollar} : 달러</Text>
                         <TextInput
                             style={styles.inputaddress}
                             placeholder="지갑주소"
@@ -61,28 +59,21 @@ const WalletModalButton = (props) => {
                         <TouchableOpacity
                             style={styles.modalbutton}
                             onPress={NowBalance}>
-                            <Text style={{ color: '#243763', fontSize:10,alignSelf: 'center' }}>입력</Text>
+                            <Text style={[styles.text, { fontSize:10,alignSelf: 'center' }]}>입력</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.modalbutton}
                             onPress={()=>{setWalletAddress(''),setEther(0),setDollar(0)}}>
-                            <Text style={{ color: '#243763', fontSize:10,alignSelf: 'center' }}>초기화</Text>
+                            <Text style={[styles.text, { fontSize:10,alignSelf: 'center' }]}>초기화</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
+                        <TouchableOpacity //부모로부터 닫기함수를 프롭으로 받아서 사용하면 별도의 State 없이도 상태 관리가 된다.
                             style={styles.modalbutton}
-                            onPress={() => { setModalVisible(!isModalVisible) }}>
-                            <Text style={{ color: '#243763', fontSize: 10, alignSelf: 'center' }}>닫기</Text>
+                            onPress={props.onCancel}> 
+                            <Text style={[styles.text, { fontSize:10,alignSelf: 'center' }]}>닫기</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                    </View>
             </Modal>
-            <View>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={{ color: '#243763', fontSize: 10, alignSelf: 'center' }}
-                        onPress={()=>setModalVisible(!isModalVisible)}>{props.content}</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
     );
 };
 const styles = StyleSheet.create({
@@ -95,7 +86,7 @@ const styles = StyleSheet.create({
     modalView: {
         height:'60%',
         margin: 20,
-        backgroundColor: '#f9f9f9',
+        backgroundColor: Colors.backgroundwhite,
         borderRadius: 20,
         padding: 35,
         shadowColor: '#000',
@@ -111,7 +102,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
     button: {
-        borderColor: '#243763',
+        borderColor: Colors.indigo500,
         borderRadius: 20,
         borderWidth: 1,
 
@@ -122,7 +113,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     modalbutton:{
-        borderColor: '#243763',
+        borderColor: Colors.indigo500,
         borderRadius: 20,
         borderWidth: 1,
 
@@ -133,13 +124,16 @@ const styles = StyleSheet.create({
     },
     inputaddress: {
         backgroundColor: '#fff',
-        color: "#243763",
+        color: Colors.indigo500,
         borderRadius: 10,
         width: 200,
         height: 40,
         // marginTop: 10,
         padding: 10,
-    }
+    },
+    text:{
+        color: Colors.indigo500,
+    },
 
 })
-export default WalletModalButton;
+export default WalletInputModal;

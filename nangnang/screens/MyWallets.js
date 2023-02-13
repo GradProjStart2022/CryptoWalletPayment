@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList,TouchableOpacity } from 'react-native';
 import ScreenTitle from '../components/ScreenTitle';
+import WalletInputModal from '../components/WalletInputModal';
 
-
-import WalletModalButton from '../components/WalletModalButton';
+import Colors from '../constants/colors';
 
 const formatData = (data, numColumns) =>{
+
     const numberOfFullRows = Math.floor(data.length/numColumns)
 
     let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
@@ -17,6 +18,7 @@ const formatData = (data, numColumns) =>{
 }
 
 const MyWallets = () => {
+    const [modalIsVisible, setModalIsVisible] = useState(false); 
     const [wallets, setWallets] = useState([
         {
             id: 1,
@@ -69,6 +71,10 @@ const MyWallets = () => {
         }
     ])
 
+    function CloseModalHandler(){
+        setModalIsVisible(false);
+    }
+
     return (
         <View style={styles.MyWalletsView}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -89,8 +95,15 @@ const MyWallets = () => {
                                         style={styles.image}
                                         source={require(`../assets/trustwallet.png`)} />
                                 </View>
-                                <Text style={{ color: '#243763' }}>{item.wallet}</Text>
-                                <WalletModalButton content="지갑 주소 입력" title={item.wallet} />
+                                <Text style={styles.indigo500}>{item.wallet}</Text>
+                                <TouchableOpacity style={styles.button}>
+                                    <Text style={[styles.indigo500,{ fontSize: 10, alignSelf: 'center' }]}
+                                        onPress={()=>setModalIsVisible(true)}>지갑 주소 입력</Text>
+                                </TouchableOpacity>
+                                <WalletInputModal
+                                    title={item.wallet}
+                                    visible={modalIsVisible} 
+                                    onCancel={CloseModalHandler}/>
                             </View>
                         )
                     }}
@@ -107,7 +120,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     WalletBlockView: {
-        flex: 3,
+        flex: 4,
         flexDirection: 'row',
         // justifyContent: 'space-around',
     },
@@ -129,7 +142,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 100 / 2,
-        backgroundColor: '#FF9F98',
+        backgroundColor: Colors.orange500,
 
         justifyContent: 'center',
         alignItems: 'center',
@@ -138,6 +151,21 @@ const styles = StyleSheet.create({
         width: '70%',
         height: '70%',
         borderRadius: 30
+    },
+    button: {
+        borderColor: Colors.indigo500,
+        borderRadius: 20,
+        borderWidth: 1,
+
+        alignSelf: 'center',
+        margin: '10%',
+        marginBottom: '10%',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        // width: '100%',
+    },
+    text:{
+        colors: Colors.indigo500,
     }
 })
 export default MyWallets;

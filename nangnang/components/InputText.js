@@ -1,6 +1,8 @@
 import React from 'react';
 import { View,TextInput,Text,StyleSheet} from 'react-native';
 
+import Colors from '../constants/colors';
+
 const InputText = ({name, placeholder, secureTextEntry,value,onChangeText}) => {
     return (
         <View style={{alignItems:'center'}}>
@@ -34,12 +36,12 @@ const styles = StyleSheet.create({
     },
 
     InputTitle:{
-        color:'#FF6E31',
+        color:Colors.orange500,
         fontWeight:'bold',
     },
     InputArea:{
         backgroundColor: '#fff',
-        color: "#243763",  
+        color: Colors.indigo500, 
         borderRadius: 10, 
 
         padding:10,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View,Text,StyleSheet } from 'react-native';
 
+import Colors from '../constants/colors';
 const ScreenTitle = (props) => {
     return (
         <View>
@@ -12,14 +13,14 @@ const ScreenTitle = (props) => {
 
 const styles =StyleSheet.create({
     title:{
-        color: '#FF6E31',
+        color: Colors.orange500,
         fontSize: 40,
         // fontWeight:'bold',
-        marginTop: '10%',
+        // marginTop: '10%',
         textAlign: 'center',
     },
     content:{
-        color:'#243763',
+        color:Colors.indigo500,
         
         textAlign:'center',
         marginTop: '5%',

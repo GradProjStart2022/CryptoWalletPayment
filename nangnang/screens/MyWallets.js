@@ -46,6 +46,7 @@ const MyWallets = () => {
                             return <View style={[styles.WalletBlock, styles.WalletBlockInvisible]}/>
                         }
                         return (
+                            <>
                             <View style={styles.WalletBlock}>
                                 <View style={styles.iconwrapper}>
                                     <Image
@@ -57,11 +58,12 @@ const MyWallets = () => {
                                     <Text style={[styles.indigo500,{ fontSize: 10, alignSelf: 'center' }]}
                                         onPress={()=>setModalIsVisible(true)}>지갑 주소 입력</Text>
                                 </TouchableOpacity>
-                                <WalletInputModal
-                                    title={item.wallet}
-                                    visible={modalIsVisible} 
-                                    onCancel={CloseModalHandler}/>
                             </View>
+                             <WalletInputModal
+                             title={item.wallet}
+                             visible={modalIsVisible} 
+                             onCancel={CloseModalHandler}/>
+                             </>
                         )
                     }}
                     keyExtractor={item => item.id}

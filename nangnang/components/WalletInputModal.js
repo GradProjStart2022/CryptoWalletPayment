@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
 import axios from 'axios';
 import EtherScanAPI from '../API/EtherScanAPI';
-
+import { useAuth } from '../constants/AuthContext';
 
 import Colors from '../constants/colors';
+import FunctionButton from './Buttons/FunctionButton';
 const WalletInputModal = (props) => {
     const [walletAddress, setWalletAddress] = useState("");
     const [currentPrice, setCurrentPrice] = useState(0);
@@ -12,6 +13,8 @@ const WalletInputModal = (props) => {
     // @@@@@ State 공부해서 최적화 시켜야한다.
     const [Ether, setEther] = useState(0);
     const [Dollar, setDollar] = useState(0);
+
+    const [user] =useAuth();
 
     const NowBalance = async () => {
         const address = walletAddress;
@@ -45,9 +48,8 @@ const WalletInputModal = (props) => {
                 visible={props.visible}>
                     <View style={styles.centerdView}>
                     <View style={styles.modalView}>
-                        <Text style={[styles.text, {fontSize: 20 }]}>{props.title}</Text>
-                        <Text style={styles.text}>사용자님의 자금</Text>
-                        {/* <Text style={{ color: "#243763" }}>{Balance} : 웨이</Text> */}
+                        <Text style={[styles.text, {fontSize: 20, color:Colors.orange500}]}>{props.title}</Text>
+                        <Text style={styles.text}>{user.name}님의 자금</Text>
                         <Text style={styles.text}>{Ether} : 이더리움</Text>
                         <Text style={styles.text}>{Dollar} : 달러</Text>
                         <TextInput
@@ -56,7 +58,10 @@ const WalletInputModal = (props) => {
                             placeholderTextColor="#A9A9AC"
                             value={walletAddress}
                             onChangeText={(e) => setWalletAddress(e)} />
-                        <TouchableOpacity
+                        <FunctionButton onPress={NowBalance}>입력</FunctionButton>
+                        <FunctionButton onPress={NowBalance}>초기화</FunctionButton>
+                        <FunctionButton onPress={NowBalance}>닫기</FunctionButton>
+                        {/* <TouchableOpacity
                             style={styles.modalbutton}
                             onPress={NowBalance}>
                             <Text style={[styles.text, { fontSize:10,alignSelf: 'center' }]}>입력</Text>
@@ -70,7 +75,7 @@ const WalletInputModal = (props) => {
                             style={styles.modalbutton}
                             onPress={props.onCancel}> 
                             <Text style={[styles.text, { fontSize:10,alignSelf: 'center' }]}>닫기</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                     </View>
             </Modal>
@@ -100,27 +105,6 @@ const styles = StyleSheet.create({
 
         alignItems: 'center',
         justifyContent: 'space-evenly'
-    },
-    button: {
-        borderColor: Colors.indigo500,
-        borderRadius: 20,
-        borderWidth: 1,
-
-        alignSelf: 'center',
-        margin: '10%',
-        marginBottom: '10%',
-        padding: 5,
-        width: '100%',
-    },
-    modalbutton:{
-        borderColor: Colors.indigo500,
-        borderRadius: 20,
-        borderWidth: 1,
-
-        alignSelf: 'center',
-        // margin: '10%',
-        padding: 5,
-        width: 100,
     },
     inputaddress: {
         backgroundColor: '#fff',

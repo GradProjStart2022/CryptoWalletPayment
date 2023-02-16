@@ -18,8 +18,8 @@ import MyWallets from './MyWallets';
 const Login = ({ navigation }) => {
     const [isLoading, setIsloading] =useState(false);
     const [loginInput, setLoginInput] = useState({
-        email:"",
-        password:"",
+        email:"dgjjanggu@gmail.com",
+        password:"dg990912@@",
     });
 
     const [_, setUser] = useAuth();
@@ -60,6 +60,7 @@ const Login = ({ navigation }) => {
                 <InputText
                     name="이메일"
                     placeholder="이메일"
+                    value={loginInput.email}
                     onChangeText={text => {
                         LoginInputHandler('email', text)
                     }} />
@@ -67,6 +68,7 @@ const Login = ({ navigation }) => {
                     name="비밀번호" 
                     placeholder="비밀번호" 
                     secureTextEntry={true}
+                    value={loginInput.password}
                     onChangeText={text => {
                         LoginInputHandler('password', text)
                     }} />

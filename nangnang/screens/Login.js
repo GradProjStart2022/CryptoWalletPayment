@@ -43,11 +43,13 @@ const Login = ({ navigation }) => {
             }
         }).then((res)=>{
             setUser(res.data);
+            console.log(res.data);
         }).catch((e)=>{
             console.log(e.message);
         }).finally(()=>{
             setIsloading(false);
         })
+
     }
 
     return (

@@ -12,7 +12,7 @@ import MyWallets from './screens/MyWallets';
 import Register from './screens/Register';
 import AuthProvider from './constants/AuthContext';
 import { useAuth } from './constants/AuthContext';
-
+import Payinfo from './screens/Payinfo'
 const Stack = createNativeStackNavigator();
 
 const Navigator = () =>{
@@ -33,6 +33,7 @@ const Navigator = () =>{
     <Stack.Navigator screenOptions={{headerShown : false}}>
       <Stack.Screen name="MyWallets" component={MyWallets}/>
       <Stack.Screen name="Main" component={Main}/>
+      <Stack.Screen name="Payinfo" component={Payinfo}/>
     </Stack.Navigator>
   )
 }

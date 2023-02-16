@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Image, FlatList,TouchableOpacity} from 'react-native';
 import { Link } from '@react-navigation/native';
+
+
 import ScreenTitle from '../components/ScreenTitle';
 import WalletInputModal from '../components/WalletInputModal';
 import HeaderLogo from '../components/HeaderLogo';
 import wallets from '../constants/wallets';
 import { useAuth } from '../constants/AuthContext';
 import Colors from '../constants/colors';
-
+import SubmitButton from '../components/Buttons/SubmitButton';
 const formatData = (data, numColumns) =>{
 
     const numberOfFullRows = Math.floor(data.length/numColumns)
@@ -20,7 +22,8 @@ const formatData = (data, numColumns) =>{
     return data;
 }
 
-const MyWallets = () => {
+
+const MyWallets = ({navigation}) => {
     const [user] = useAuth();
     const [modalIsVisible, setModalIsVisible] = useState(false); 
     
@@ -32,10 +35,14 @@ const MyWallets = () => {
         <View style={styles.MyWalletsView}>
             <View style={styles.header}>
                 <Link to={{screen:'Main'}} style={styles.link}>메인으로가기</Link>
+                <Text style={{color:'red'}}>사용자 : {user.email.slice(0,9)}</Text>
                 <HeaderLogo />
             </View>
             <View style={styles.title}>
-                <ScreenTitle title="내 지갑" />
+                <ScreenTitle title="지갑 선택" />
+            </View>
+            <View style={{flex:1, width:'50%',alignSelf:'center'}}>
+                    <SubmitButton onPress={() => navigation.navigate('Payinfo')}>결제 정보 확인</SubmitButton>
             </View>
             <View style={styles.WalletBlockView}>
                 <FlatList
@@ -46,7 +53,6 @@ const MyWallets = () => {
                             return <View style={[styles.WalletBlock, styles.WalletBlockInvisible]}/>
                         }
                         return (
-                            <>
                             <View style={styles.WalletBlock}>
                                 <View style={styles.iconwrapper}>
                                     <Image
@@ -58,12 +64,11 @@ const MyWallets = () => {
                                     <Text style={[styles.indigo500,{ fontSize: 10, alignSelf: 'center' }]}
                                         onPress={()=>setModalIsVisible(true)}>지갑 주소 입력</Text>
                                 </TouchableOpacity>
+                                <WalletInputModal
+                                    title={item.wallet}
+                                    visible={modalIsVisible} 
+                                    onCancel={CloseModalHandler}/>
                             </View>
-                             <WalletInputModal
-                             title={item.wallet}
-                             visible={modalIsVisible} 
-                             onCancel={CloseModalHandler}/>
-                             </>
                         )
                     }}
                     keyExtractor={item => item.id}
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
         // marginTop:,
     },
     WalletBlockView: {
-        flex: 4,
+        flex: 7,
         flexDirection: 'row',
         // justifyContent: 'space-around',
     },

@@ -10,8 +10,6 @@ import wallets from '../constants/wallets';
 import Colors from '../constants/colors';
 import SubmitButton from '../components/Buttons/SubmitButton';
 
-import App from '../screens/App';
-
 import { usePayinfo } from '../context/PayinfoContext';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
@@ -39,28 +37,7 @@ const formatData = (data, numColumns) =>{
 // }
 const SelectWallet = ({navigation}) => {
 
-    // Walletconnect v2.0 사용
-    const { isConnected, open, provider } = useWalletConnectModal();
-  
-    const handleButtonPress = async () => {
-      if (isConnected) {
-        return provider?.disconnect();
-      }
-      return open();
-    };
-  
-    const onCopyClipboard = async (value) => {
-      setStringAsync(value);
-    };
-
-    // v1.0 WC_connector(WalletConnect_connector) 에서 사용할 함수들을 가져옴
-    const {
-        connectWallet,
-        killSession,
-        sendTx,
-        connector,
-    } = WC_connector(navigation,paymentCheck);
-
+    const connectWallet = ""
     const [payinfo] = usePayinfo();  
     const [state, dispatch] =useContext(AuthContext);
     const [modalIsVisible, setModalIsVisible] = useState(false); 
@@ -77,11 +54,10 @@ const SelectWallet = ({navigation}) => {
 
           })
           console.log("영수증 번호 생성 - ",JSON.stringify(receiptid,null, 2))
-        //   const res = await EtherScanAPI.get(`?module=transaction&action=gettxreceiptstatus&txhash=${transactionhash}&apikey=CDFTCSDIJ4HNYU41CJYRP2I3SSCNJ7PGYD`)
-        //   console.log('paymentCheck - 거래 결과 ', res.data.status)
-        //   console.log('transactionhash 값 ',transactionhash )
-        //   const status = res.data.status
-          const status = 1
+          const res = await EtherScanAPI.get(`?module=transaction&action=gettxreceiptstatus&txhash=${transactionhash}&apikey=CDFTCSDIJ4HNYU41CJYRP2I3SSCNJ7PGYD`)
+          console.log('paymentCheck - 거래 결과 ', res.data.status)
+          console.log('transactionhash 값 ',transactionhash )
+          const status = res.data.status
           if(status === "1" || status === 1){
             const walletname =  await state.wallet.find(e => e.selected)
             console.log("결제정보 저장 시에 walletname 확인", walletname)
@@ -94,7 +70,7 @@ const SelectWallet = ({navigation}) => {
                             payment_receipt_idx : payinfo.receiptid,
                             seller_id : payinfo.sellerid,
                             consumer_id : state.uid,
-                            sender_wallet_address : connector.accounts[0],
+                            sender_wallet_address : "",
                             receiver_wallet_address : payinfo.walletaddress,
                             total_won_price : payinfo.price,
                             total_coin_price : payinfo.exchangedvalue
@@ -147,7 +123,6 @@ const SelectWallet = ({navigation}) => {
                 }
             ])
         }else{
-            connectWallet()
         }
     }
     const CloseModalHandler = () => {
@@ -174,13 +149,13 @@ const SelectWallet = ({navigation}) => {
             <View>
                 <SubmitButton onPress={paymentCheck}>결제정보 저장 테스트</SubmitButton>
             </View>
-            {!connector.connected && (
+            {true && (
                 <View style={{flex:1, width:'50%',alignSelf:'center'}}>
                     <SubmitButton onPress={CW}>지갑 연결</SubmitButton>
                 </View>
             )}
             {/* 지갑이 연결되어있다면 아래 버튼들을 출력 */}
-            {connector.connected && (
+            {true && (
                 <>
                 <Text style={{color : Colors.indigo500,alignSelf:'center'}}> 연결된 지갑 : {payinfo.selectedWallet}</Text>
                 <View style={{flex:1, width:'50%',alignSelf:'center'}}>

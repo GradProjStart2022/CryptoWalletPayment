@@ -1,14 +1,14 @@
 export default () => ({
   expo: {
-    name: 'walletconnect-modal-react-native-example',
-    slug: 'walletconnect-modal-react-native-example',
+    name: 'nangnang',
+    slug: 'nangnang',
     version: '1.0.0',
     orientation: 'default',
     icon: './assets/icon.png',
     scheme: 'rnwalletconnectmodalexpo',
     userInterfaceStyle: 'automatic',
     splash: {
-      image: './assets/splash.png',
+      image: './src/assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#ffffff',
     },
@@ -28,7 +28,7 @@ export default () => ({
       favicon: './assets/favicon.png',
     },
     extra: {
-        projectId: 'YOUR_PROJECT_ID YOUR_PROJECT_ID YOUR_PROJECT_ID YOUR_PROJECT_ID YOUR_PROJECT_ID',
+        projectId: 'cdb3f2394c9b363fa73094e7eb02db42',
     },
     updates: {
       url: 'https://u.expo.dev/f477ced2-c06e-470c-adcc-2c997a90cc4e',

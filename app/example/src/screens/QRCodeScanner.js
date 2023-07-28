@@ -19,6 +19,8 @@ function QRCodeScanner ({navigation, connector, connectWallet}){
       const {status} = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
+
+    getBar
   },[]);
 
   const handlerBarCodeScanned = ({type, data})=>{
@@ -70,12 +72,13 @@ function QRCodeScanner ({navigation, connector, connectWallet}){
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
+      {/* <BarCodeScanner
         style={[StyleSheet.absoluteFill, styles.qrcode]}
         onBarCodeScanned={scanData ? undefined : handlerBarCodeScanned}>
         <Text style={styles.description}>Scan your QR code</Text>
              
-      </BarCodeScanner>
+      </BarCodeScanner> */}
+      <BarCodeScanner style={StyleSheet.absoluteFillObject}></BarCodeScanner>
       {scanData && 
         <Button style={{margin:200}} title="Scan Again?" onPress={()=> setScanData(false)}/>}
       <View style={styles.footer}>

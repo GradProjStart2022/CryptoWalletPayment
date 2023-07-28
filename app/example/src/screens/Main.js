@@ -21,7 +21,9 @@ const Main = ({ navigation }) => {
     useEffect(()=>{
         console.log('Login_Screen',JSON.stringify(state,null,2));
     },[])
-
+    const toBack = () =>{
+        navigation.goBack()
+    }
     return (
         <View style={styles.MainView}>
             <Logo/>
@@ -33,6 +35,11 @@ const Main = ({ navigation }) => {
                     onPress={()=>navigation.navigate('MyWallets')}
                     >지갑 등록 / 내 정보</SubmitButton>
                 <SubmitButton onPress={()=>navigation.navigate('MyPaymentlist')}>내 결제 내역</SubmitButton>
+                <Pressable
+                    style={styles.button}
+                    onPress={()=>navigation.navigate('SelectWallet')}>
+                    <Text style={styles.text}>결제하러가기</Text>
+                </Pressable>
                 {state.isLogin && (<SubmitButton
                     onPress={logoutHandler}>로그아웃</SubmitButton>)}
                 {payinfo && payinfo.inpayment && ( 
@@ -86,10 +93,8 @@ const styles = StyleSheet.create({
         color: Colors.Incarnadine500
     },
     QRcode:{
-        color: Colors.orange400,
         width: 100,
         height:100,
-
         alignSelf:'center'
     }
 })

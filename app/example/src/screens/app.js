@@ -5,6 +5,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Button
   } from 'react-native';
   import {
     WalletConnectModal,
@@ -14,7 +15,7 @@ import {
   import { sessionParams, providerMetadata } from '../constants/Config';
   import { BlockchainActions } from '../components/BlockchainActions';
   
-  export default function App() {
+  export default function App({navigation}) {
     const { isConnected, open, provider } = useWalletConnectModal();
   
     const handleButtonPress = async () => {
@@ -39,6 +40,9 @@ import {
                 {isConnected ? 'Disconnect' : 'Connect Wallet'}
               </Text>
             </TouchableOpacity>
+            <View style={styles.footer}>
+            <Button onPress={() => navigation.navigate('Main')} title="뒤로가기"/>
+          </View>
           </View>
         )}
         <WalletConnectModal

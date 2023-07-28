@@ -13,7 +13,6 @@ import PayResult from '../screens/PayResult';
 import { AuthContext } from '../context/AuthContext';
 import MyPaymentlist from '../screens/MyPaymentlist';
 import Paymentdetail from '../screens/Paymentdetail';
-
 import App from '../screens/App';
 
 const Stack = createStackNavigator();

@@ -1,5 +1,5 @@
 .paymentrecords_wrap {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   width: 100%;
   max-width: 881px;
   height: 100%;
@@ -29,7 +29,7 @@
   padding: 0px 30px 60px 30px;
   width: 100%;
   max-width: 821px;
-  height: 473px;
+  height: 453px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

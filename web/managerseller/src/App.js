@@ -22,9 +22,9 @@ export default function App() {
         <AuthProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<SignInFormPage />} />
-              <Route path="/signup" element={<SignUpFormPage />} />
-              <Route path="/main" element={<MainHomePage />} />
+              <Route path={process.env.PUBLIC_URL + "/"} element={<SignInFormPage />} />
+              <Route path={process.env.PUBLIC_URL + "/signup"} element={<SignUpFormPage />} />
+              <Route path={process.env.PUBLIC_URL + "/main"} element={<MainHomePage />} />
               <Route
                 path="/BlockchainManage"
                 element={<MainBlockchainManagePage />}

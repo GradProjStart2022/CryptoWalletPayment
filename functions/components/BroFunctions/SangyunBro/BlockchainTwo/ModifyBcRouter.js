@@ -6,6 +6,7 @@ const express = require('express');
 const ModifyBcRouter = express.Router();
 
 ModifyBcRouter.get('/brofucntions/sangyunbro/BlockchainTwo/readSellersChosenMainBlockchain', async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     try {
         const result = await ModifyBcFuncs.readSellersChosenMainBlockchain(req.query);
         res.status(200).json({
@@ -18,6 +19,7 @@ ModifyBcRouter.get('/brofucntions/sangyunbro/BlockchainTwo/readSellersChosenMain
 });
 
 ModifyBcRouter.delete('/brofucntions/sangyunbro/BlockchainTwo/deleteSellersChosenMainBlockchain', async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     try {
         const result = await ModifyBcFuncs.deleteSellersChosenMainBlockchain(req.body);
         res.status(200).json({

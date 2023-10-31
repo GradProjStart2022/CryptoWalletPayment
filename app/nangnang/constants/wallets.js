@@ -1,30 +1,35 @@
 const wallets = ([
     {
-        id: 1,
+        id_num:"1",
+        id: "metamask",
         wallet: "Metamask",
         imageURL: require(`../assets/metamask.png`)
 
     },
     {
-        id: 2,
+        id_num:"2",
+        id: "trustwallet",
         wallet: "Trust Wallet",
-        imageURL: require(`../assets/trustwallet.png`)
+        imageURL: require(`../assets/tw.png`)
     },
     {
-        id: 3,
-        wallet: "WalletConnect",
-        imageURL: require(`../assets/walletconnect.png`)
+        id_num:"3",
+        id: "bitpay",
+        wallet: "Bitpay",
+        imageURL: require(`../assets/bitpay.png`)
 
     },
     {
-        id: 4,
-        wallet: "Blockstream Green",
-        imageURL: require(`../assets/blockstreamgreen.png`)
+        id_num:"4",
+        id: "argent",
+        wallet: "Argent",
+        imageURL: require(`../assets/argent.png`)
     },
     {
-        id: 5,
-        wallet: "Blue Wallet",
-        imageURL: require(`../assets/bluewallet.png`)
+        id_num:"5",
+        id: "rainbow",
+        wallet: "Rainbow",
+        imageURL: require(`../assets/rainbow.png`)
 
     },
 ])

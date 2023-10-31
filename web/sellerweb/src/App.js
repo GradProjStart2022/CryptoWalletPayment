@@ -1,8 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import BuyerWrap2 from "./components/Buyer/BuyerWrap2";
-import BuyerWrap1 from "./components/Buyer/BuyerWrap1";
-import EmptyPage from "./components/EmptyPage";
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import BuyerWrap2 from './components/Buyer/BuyerWrap2';
+import BuyerWrap1 from './components/Buyer/BuyerWrap1';
+import EmptyPage from './components/EmptyPage';
 const App = () => {
   return (
     <BrowserRouter>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from  'react';
 import { View,Text,StyleSheet,ScrollView } from 'react-native';
 import { Link } from '@react-navigation/native';
 
@@ -7,41 +7,37 @@ import ScreenTitle from '../components/ScreenTitle';
 import Colors from '../constants/colors';
 import SubmitButton from '../components/Buttons/SubmitButton';
 import ContentsBox from '../components/ContentsBox';
+import { usePayinfo } from '../context/PayinfoContext';
+import { AuthContext } from '../context/AuthContext';
 
-import { usePayinfo } from '../constants/PayinfoContext';
-import { useAuth } from '../constants/AuthContext';
 const Payinfo = ({navigation}) => {
-    const [user] = useAuth();
+    
     const [payinfo] = usePayinfo();
-
+    const [state, dispatch] = useContext(AuthContext);
 
     return (
         <View style={styles.PayinfoView}>
             <View style={styles.header}>
                 <Link to={{screen:'MyWallets'}}  style={styles.link}>뒤로 가기</Link>
-                <Text style={{color:'red'}}>사용자 : {user.email.slice(0,9)}</Text>
+                <Text style={{color:'red'}}>사용자 : {state.email}</Text>
                 <HeaderLogo />
             </View>
             <View style={styles.title}>
                 <ScreenTitle title="결제 정보" />
             </View>
             <ScrollView style={styles.content}>
-                <ContentsBox title="제품명" contents={payinfo.Name}/>
-                <ContentsBox title="결제 금액" contents={payinfo.Price}/>
-                <ContentsBox title="사용 지갑" contents={payinfo.Wallet}/>
-                <ContentsBox title="사용 코인" contents={payinfo.Coin}/>
-                <ContentsBox title="지갑 키" contents={payinfo.WalletKey}/>
-                <ContentsBox title="결제 시간" contents={payinfo.PaymentTime}/>
-                {/* <ContentsBox title="제품명" contents="내용"/>
-                <ContentsBox title="제품명" contents="내용"/>
-                <ContentsBox title="제품명" contents="내용"/> */}
+                <ContentsBox title="제품명" contents={payinfo.product}/>
+                <ContentsBox title="결제 금액" contents={payinfo.price}/>
+                <ContentsBox title="사용 지갑" contents={payinfo.wallet}/>
+                <ContentsBox title="보낼 지갑주소" contents={payinfo.walletaddress}/>
             </ScrollView>
             <View style={styles.button}>
-                <SubmitButton onPress={() => navigation.navigate('MyWallets')}>지갑 선택으로</SubmitButton>
+                <SubmitButton onPress={() => navigation.navigate('SelectWallet')}>지갑 선택으로</SubmitButton>
             </View>
         </View>
     );
 };
+
 const styles = StyleSheet.create({
     PayinfoView: {
         flex: 1,

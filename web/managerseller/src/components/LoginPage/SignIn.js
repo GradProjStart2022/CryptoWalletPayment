@@ -1,90 +1,97 @@
-import React from 'react';
-// import { Link } from 'react-router-dom';
-import classes from './SignIn.module.css';
-import { useState, useEffect } from 'react';
-// import { withRouter } from 'react-router-dom';
+import React from "react";
+import classes from "./SignIn.module.css";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import UserContext from "../../contexts/UserContext";
 
-const SignIn = ({ handleSetAccessToken }) => {
-  const [signInId, setSignInId] = useState('');
-  const [signInPw, setSignInPw] = useState('');
+const SignIn = (props) => {
   const [signInInvalid, setSignInInvalid] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const signIn = useContext(UserContext);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (isFormSubmitted && signIn.id !== "") {
+      const apiUrl = `https://asia-northeast3-nangnang-b59c0.cloudfunctions.net/api/brofucntions/sangyunbro/GetSellerData/getsellerdata?seller_id=${signIn.id}`;
+      async function fetchData() {
+        try {
+          const response = await fetch(apiUrl);
+          if (!response.ok) {
+            alert(`아이디가 없습니다.`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          const data = await response.json();
+          console.log(`data`, data.data);
+          if (data.data.password === signIn.password) {
+            signIn.isLogin = true;
+            signIn.consumer_or_not = data.data.consumer_or_not;
+            signIn.email = data.data.email;
+            signIn.phone_number = data.data.phone_number;
+            signIn.real_name = data.data.real_name;
+            signIn.resident_registration_number = data.data.resident_registration_number;
+            alert('로그인 되었습니다.');
+            navigate('/main');
+          } else {
+            alert('비밀번호가 틀렸습니다.');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+
+      fetchData();
+    }
+  }, [isFormSubmitted]);
+
 
   const handleUsernameChange = (event) => {
-    setSignInId(event.target.value);
+    signIn.id = event.target.value;
+    setIsFormSubmitted(false);
   };
 
   const handlePasswordChange = (event) => {
-    setSignInPw(event.target.value);
+    signIn.password = event.target.value;
+    setIsFormSubmitted(false);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // 폼 제출 기본 동작 방지
 
-    // 사용자 입력 가져오기
-    var id = signInId;
-    var password = signInPw;
-
-    // 서버로 로그인 요청 보내기 (예: AJAX 요청)
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8080/login', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          var response = JSON.parse(xhr.responseText);
-          var accessToken = response.accessToken;
-
-          // 액세스 토큰 저장 (로컬 스토리지 사용)
-          localStorage.setItem('accessToken', accessToken);
-
-          // 로그인 성공 후 필요한 동작 수행
-          // 예: 다른 페이지로 이동, UI 업데이트 등
-          alert('Login successful');
-          setSignInInvalid(false);
-          const curAccessToken = localStorage.getItem('accessToken');
-          if (curAccessToken === accessToken) {
-            handleSetAccessToken(curAccessToken);
-            window.location.href = '/';
-          }
-        } else {
-          // 로그인 실패 처리
-          // 예: 오류 메시지 표시, 입력 초기화 등
-          alert('Login failed');
-          setSignInInvalid(true);
-        }
-      }
-    };
-    xhr.send(JSON.stringify({ id: id, pw: password }));
+  const handleSubmit = (e) => {
+    e.preventDefault(); // 기본 폼 제출 동작을 막음
+    setIsFormSubmitted(true); // 폼이 제출되었음을 표시
   };
-
-  useEffect(() => {
-    setSignInInvalid(false); // 컴포넌트가 마운트될 때 count 상태를 0으로 설정
-  }, []);
 
   return (
     <div className={classes.login_component}>
+      {console.log(`signIn`, signIn)}
       <div className={classes.wrap}>
         <h1>Seller Manager</h1>
-        <h1>Login</h1>
+        <h1>SignIn</h1>
+        <br />
         <form id="signinForm" className={classes.form} onSubmit={handleSubmit}>
-          <input
-            className={classes.inputaddress}
-            type={'text'}
-            id="username"
-            placeholder="Username"
-            required
-            autoComplete="email"
-            onChange={handleUsernameChange}
-          ></input>
-          <input
-            className={classes.inputaddress}
-            type={'password'}
-            id="password"
-            placeholder="Password"
-            required
-            autoComplete="current-password"
-            onChange={handlePasswordChange}
-          ></input>
+          <label className={classes.formlabel}>
+            <span className={classes.formtext}>아이디&nbsp;&nbsp;</span>
+            <input
+              className={classes.inputaddress}
+              type={"text"}
+              id="username"
+              placeholder=""
+              required
+              autoComplete="on"
+              onChange={handleUsernameChange}
+            />
+          </label>
+          <label className={classes.formlabel}>
+            <span className={classes.formtext}>비밀번호&nbsp;&nbsp;</span>
+            <input
+              className={classes.inputaddress}
+              type={"password"}
+              id="password"
+              placeholder="8자 이상"
+              required
+              autoComplete="off"
+              onChange={handlePasswordChange}
+            />
+          </label>
           <div className={classes.signbuttons}>
             <button
               type="submit"
@@ -93,23 +100,27 @@ const SignIn = ({ handleSetAccessToken }) => {
             >
               로그인
             </button>
-            <button
-              type="submit"
-              id="signupbutton"
-              className={classes.signinbutton}
-            >
-              회원가입
-            </button>
-            <div className={classes.signInInvalid}>
-              {signInInvalid && (
-                <>
-                  <p> 아이디 또는 비밀번호를 잘못 입력했습니다.</p>
-                  <p> 입력하신 내용을 다시 확인해주세요.</p>
-                </>
-              )}
-            </div>
           </div>
         </form>
+        <Link to={"/signup"} className={classes.signupbutton_wrap}>
+          <button id="signupbutton" className={classes.signupbutton}>
+            회원가입
+          </button>
+        </Link>
+        <div className={classes.signInInvalid}>
+          {signInInvalid && (
+            <>
+              <p> 아이디 또는 비밀번호를 잘못 입력했습니다.</p>
+              <p> 입력하신 내용을 다시 확인해주세요.</p>
+            </>
+          )}
+        </div>
+        {loading ? (
+          <p>로그인 중입니다...</p>
+        ) : (
+          <div>
+          </div>
+        )}
       </div>
     </div>
   );

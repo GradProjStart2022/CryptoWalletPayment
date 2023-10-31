@@ -5,48 +5,51 @@ import { BarCodeScanner} from 'expo-barcode-scanner';
 
 import Colors from '../constants/colors';
 import SubmitButton from '../components/Buttons/SubmitButton';
-import { PayinfoContext, usePayinfo } from '../constants/PayinfoContext';
+import { PayinfoContext, usePayinfo } from '../context/PayinfoContext';
 
 const {width} = Dimensions.get('window')
 
-function QRCodeScanner ({navigation}){
+function QRCodeScanner ({navigation, connector, connectWallet}){
   const [hasPermission, setHasPermission] = useState(null); 
   const [scanData, setScanData] = useState(false);
   const [_, setPayinfo] = usePayinfo();
 
 
-  useEffect(()=>{
-    (async()=>{
+  useEffect(()=>{(async()=>{
       const {status} = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
   },[]);
 
-  let time = new Date();
-  const dummydata={
-    Name:"kimchi",
-    Price:"5000",
-    Wallet:"metamask",
-    Coin:"ETH",
-    WalletKey:"******",
-    PaymentTime: time.toLocaleString()
-  }
-
   const handlerBarCodeScanned = ({type, data})=>{
+    console.log("QR 코드 데이터 확인",data)
+    var arrdata = data.split(',')
     
+    const Payinfo ={
+      inpayment : true,
+      product: arrdata[1],
+      price: arrdata[2],
+      wallet: arrdata[3],
+      walletaddress: arrdata[4],
+      receiptid : arrdata[5],
+      sellerid: arrdata[6],
+      selectedWalletID:"",
+      selectedWallet:"",
+      exchangedvalue: 0,
+      mywallet:"",
+      mywalletaddress: "",
+      ticker : "",
+    }
     if(data){
       setScanData(true);
-      // setPayinfo(data);
-      setPayinfo(dummydata);
-      console.log(`${data}`);
-      navigation.navigate('MyWallets');
+      setPayinfo(Payinfo);
+      navigation.navigate('SelectWallet');
     }
     else{
-      console.log(`Data: ${data.email}`);
       console.log(`Type: ${type}`);
       setScanData(false)
     }
-
+    // console.log("from QRCodeScanner - QR 코드 스캔 시간:", scanTime, "밀리초");
   } 
   if(hasPermission===null){
     return (
@@ -61,6 +64,7 @@ function QRCodeScanner ({navigation}){
         <Button onPress={() => navigation.navigate('Main')} title="뒤로가기"/>
       </View>
       </View>
+      
     )
   }
 
@@ -89,6 +93,7 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     justifyContent:'flex-end',
   },
+
   qrcode:{
     flex: 1,
     justifyContent: 'center',

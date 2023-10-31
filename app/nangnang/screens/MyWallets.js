@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { Text, View, StyleSheet, Image, FlatList,TouchableOpacity,Modal} from 'react-native';
 import { Link } from '@react-navigation/native';
 
 
 import ScreenTitle from '../components/ScreenTitle';
-import WalletInputModal from '../components/WalletInputModal';
 import HeaderLogo from '../components/HeaderLogo';
 import wallets from '../constants/wallets';
-import { useAuth } from '../constants/AuthContext';
 import Colors from '../constants/colors';
 import SubmitButton from '../components/Buttons/SubmitButton';
-import {WC_connector} from '../API/WC_connector';
+import { AuthContext } from '../context/AuthContext';
+import WalletAddress from '../components/WalletAddress';
 
 const formatData = (data, numColumns) =>{
 
@@ -24,18 +23,9 @@ const formatData = (data, numColumns) =>{
     return data;
 }
 
-
 const MyWallets = ({navigation}) => {
-    // WC_connector(WalletConnect_connector) 에서 사용할 함수들을 가져옴
-    const {
-        connectWallet,
-        killSession,
-        sendTx,
-        connector,
-        shortenAddress,
-      } = WC_connector();
-
-    const [user] = useAuth();
+    
+    const [state, dispatch] = useContext(AuthContext)
     const [modalIsVisible, setModalIsVisible] = useState(false); 
     const [selectedItem, setSelectedItem] = useState({});
 
@@ -46,46 +36,19 @@ const MyWallets = ({navigation}) => {
         setSelectedItem(item)
         setModalIsVisible(true)
     }
-    const temp = () => {   
-        console.log("temp clicked");
-    }
-
-    // sendTx 함수에서 사용하는 값인데 이건 나중에 값 받아와서 넣어야함
-    // 지금은 그냥 temp 값으로 0x0을 넣어놓음
-    const valueAmount = '0x0';
 
     return (
         <View style={styles.MyWalletsView}>
             <View style={styles.header}>
                 <Link to={{screen:'Main'}} style={styles.link}>메인으로가기</Link>
-                <Text style={{color:'red'}}>사용자 : {user.email.slice(0,9)}</Text>
+                <Text style={{color:'red'}}>사용자 : {state.name}</Text>
                 <HeaderLogo />
             </View>
             <View style={styles.title}>
-                <ScreenTitle title="지갑 선택" />
+                <ScreenTitle title="내 지갑"/>
             </View>
-            {/* 지갑 연결이 안되어있다면 아래 버튼을 출력 */}
-            {!connector.connected && (
-                <View style={{flex:1, width:'50%',alignSelf:'center'}}>
-                    <SubmitButton onPress={connectWallet}>지갑 연결</SubmitButton>
-                </View>
-            )}
-            {/* 지갑이 연결되어있다면 아래 버튼들을 출력 */}
-            {connector.connected && (
-                <>
-                <Text>address : {shortenAddress(connector.accounts[0])}</Text>
-                <View style={{flex:1, width:'50%',alignSelf:'center'}}>
-                    <SubmitButton onPress={killSession}>세션 종료</SubmitButton>
-                </View>
-                <View style={{flex:1, width:'50%',alignSelf:'center'}}>
-                    {/* sendTx(toAccount: string, valueAmount: string) 인데 지금은 toAccount에 연결된 자기자신 지갑주소 넣은거고 valueAmount 값은 위에 만들었고(0x0으로) */}
-                    <SubmitButton onPress={() => sendTx(connector.accounts[0], valueAmount)}>거래 전송</SubmitButton>
-                </View>
-                </>
-            )}
-            
             <View style={{flex:1, width:'50%',alignSelf:'center'}}>
-                    <SubmitButton onPress={() => navigation.navigate('Payinfo')}>결제 정보 확인</SubmitButton>
+                    <SubmitButton>내 정보</SubmitButton>
             </View>
             <View style={styles.WalletBlockView}>
                 <FlatList
@@ -106,7 +69,7 @@ const MyWallets = ({navigation}) => {
                                 <TouchableOpacity 
                                     style={styles.button}
                                     onPress={()=>handleListItemPress(item)}>
-                                    <Text style={[styles.indigo500,{ fontSize: 10, alignSelf: 'center' }]}>지갑 주소 입력</Text>
+                                    <Text style={[styles.indigo500,{ fontSize: 10, alignSelf: 'center' }]}>지갑 주소 등록</Text>
                                 </TouchableOpacity>
                             </View>
                         )
@@ -114,8 +77,8 @@ const MyWallets = ({navigation}) => {
                     keyExtractor={item => item.id}
                     alwaysBounceVertical={false}
                 />
-                <WalletInputModal
-                    title={selectedItem.wallet}
+                <WalletAddress
+                    selecteditem={selectedItem}
                     visible={modalIsVisible} 
                     oncancel={CloseModalHandler}/>
             </View>
